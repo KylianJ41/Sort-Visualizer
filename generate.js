@@ -1,5 +1,6 @@
 
 const stickSec = document.querySelector('main section')
+const generateTxt = document.querySelector('#generate')
 
 var rangeInput = document.querySelector('input[name="size"]');
 rangeInput.value = 10; // default value at 10
@@ -54,4 +55,10 @@ rangeInput.addEventListener('input', (e) => {
 
     generateSticks(n)
 
+})
+
+generateTxt.addEventListener('click', (e) => {
+    
+    stickSec.innerHTML = ''
+    generateSticks(rangeInput.value)
 })

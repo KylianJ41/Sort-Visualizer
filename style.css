@@ -37,7 +37,7 @@ nav ul {
     align-items: center;
 }
 
-nav ul li {
+nav ul li, #generate {
     cursor: pointer;
 }
 
