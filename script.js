@@ -1,12 +1,20 @@
 const stickArr = document.querySelector('main section')
 
 var selectedSort = ""
+/* The two variables below depends on which 
+speed is selected by the user. Normal speed by default */
+var classicDelay = 100
+var shortDelay = 50
 
 const mergeText = document.querySelector('#merge')
 const quickText = document.querySelector('#quick')
 const heapText = document.querySelector('#heap')
 const insertText = document.querySelector('#insert')
 const bubbleText = document.querySelector('#bubble')
+
+const slow = document.querySelector('#slow')
+const normal = document.querySelector('#normal')
+const fast = document.querySelector('#fast')
 
 const sortText = document.querySelector('#sort')
 sortText.style.cursor = 'not-allowed'
@@ -63,6 +71,37 @@ bubbleText.addEventListener('click', (e) => {
     bubbleText.style.color = '#e95420'
 })
 
+slow.addEventListener('click', (e) => {
+
+    slow.style.backgroundColor = '#e95420'
+    normal.style.backgroundColor = '#989898'
+    fast.style.backgroundColor = '#989898'
+
+    classicDelay = 400
+    shortDelay = 200
+
+})
+
+normal.addEventListener('click', (e) => {
+
+    slow.style.backgroundColor = '#989898'
+    normal.style.backgroundColor = '#e95420'
+    fast.style.backgroundColor = '#989898'
+
+    classicDelay = 170
+    shortDelay = 85
+})
+
+fast.addEventListener('click', (e) => {
+
+    slow.style.backgroundColor = '#989898'
+    normal.style.backgroundColor = '#989898'
+    fast.style.backgroundColor = '#e95420'
+
+    classicDelay = 90
+    shortDelay = 40
+})
+
 // _____________________________________________________________
 
 function delay(ms) {
@@ -101,7 +140,7 @@ async function bubbleSort() {
                 stickArr.children[i].style.backgroundColor = 'white'
                 //console.log(stickArr.children[i].textContent + ' < ' + stickArr.children[i + 1].textContent)
             }
-            await delay(130)
+            await delay(classicDelay)
         }
         stickArr.children[stickArr.children.length - 1].style.backgroundColor = 'white'
         i_max--
@@ -118,15 +157,15 @@ async function insertSort() {
 
         while (v > 0 && parseInt(stickArr.children[v-1].textContent) > parseInt(stickArr.children[v].textContent)) {
             stickArr.children[v].style.backgroundColor = 'red'
-            await delay(80)
+            await delay(classicDelay)
             stickArr.insertBefore(stickArr.children[v], stickArr.children[v-1])
             v--
         }
 
         if (v != i) {
-            await delay(20)
+            await delay(shortDelay)
             stickArr.children[v].style.backgroundColor = 'green'
-            await delay(100)
+            await delay(classicDelay)
             stickArr.children[v].style.backgroundColor = 'white'
         }
 
@@ -151,7 +190,7 @@ async function heapify(i, len) {
 	
         stickArr.children[i].style.backgroundColor = 'red'
         stickArr.children[high].style.backgroundColor = 'red'
-        await delay(100)
+        await delay(classicDelay)
 
         let temp = stickArr.children[i].cloneNode(true);
         let replaceChild = stickArr.children[high].cloneNode(true);
@@ -160,7 +199,7 @@ async function heapify(i, len) {
 
         stickArr.children[i].style.backgroundColor = 'green'
         stickArr.children[high].style.backgroundColor = 'green'
-        await delay(70)
+        await delay(shortDelay)
 
         stickArr.children[i].style.backgroundColor = 'white'
         stickArr.children[high].style.backgroundColor = 'white'
@@ -185,7 +224,7 @@ async function heapSort() {
 
         stickArr.children[i].style.backgroundColor = 'red'
         stickArr.children[0].style.backgroundColor = 'red'
-        await delay(100)
+        await delay(classicDelay)
 
         let temp = stickArr.children[i].cloneNode(true);
         let replaceChild = stickArr.children[0].cloneNode(true);
@@ -194,7 +233,7 @@ async function heapSort() {
 
         stickArr.children[i].style.backgroundColor = 'green'
         stickArr.children[0].style.backgroundColor = 'green'
-        await delay(70)
+        await delay(shortDelay)
         stickArr.children[i].style.backgroundColor = 'white'
         stickArr.children[0].style.backgroundColor = 'white'
 
@@ -227,7 +266,7 @@ async function merge(l, m, r) {
     i = l
 
     while (j < len1 && k < len2) {
-        await delay(100)
+        await delay(classicDelay)
 
         if (parseInt(l_arr[j].textContent) <= parseInt(r_arr[k].textContent)) {
             stickArr.replaceChild(l_arr[j], stickArr.children[i])
@@ -245,14 +284,14 @@ async function merge(l, m, r) {
     }
 
     while (j < len1) {
-        await delay(100)
+        await delay(classicDelay)
         stickArr.replaceChild(l_arr[j], stickArr.children[i])
         j++
         i++
     }
 
     while (k < len2) {
-        await delay(100)
+        await delay(classicDelay)
         stickArr.replaceChild(r_arr[k], stickArr.children[i])
         k++
         i++
@@ -280,6 +319,71 @@ async function mergeSort() {
     christmasTree()
 }
 
+async function swap(i, j) {
+
+    stickArr.children[i].style.backgroundColor = 'red'
+    stickArr.children[j].style.backgroundColor = 'red'
+    await delay(classicDelay)
+
+    let temp = stickArr.children[i].cloneNode(true)
+    let replaceChild = stickArr.children[j].cloneNode(true)
+    stickArr.replaceChild(replaceChild, stickArr.children[i])
+    stickArr.replaceChild(temp, stickArr.children[j])
+
+    stickArr.children[i].style.backgroundColor = 'green'
+    stickArr.children[j].style.backgroundColor = 'green'
+    await delay(shortDelay)
+
+    stickArr.children[i].style.backgroundColor = 'white'
+    stickArr.children[j].style.backgroundColor = 'white'
+}
+
+async function partitionning(low, high) {
+
+    let pivot = parseInt(stickArr.children[high].textContent)
+    let i = low - 1
+
+    // sub-array limits in purple
+    stickArr.children[low].style.backgroundColor = 'purple'
+    stickArr.children[high].style.backgroundColor = 'purple'
+
+    for (let j = low; j < high; j++) {
+
+        if (parseInt(stickArr.children[j].textContent) < pivot) {
+
+            i++
+            await swap(i, j)
+
+            if (i == low || i == high)
+                stickArr.children[i].style.backgroundColor = 'purple'
+
+        }
+    }
+
+    i++
+    await swap(i, high)
+
+    stickArr.children[low].style.backgroundColor = 'white'
+    stickArr.children[high].style.backgroundColor = 'white'
+
+    return i
+}
+
+async function quickSort_aux(low, high) {
+
+    if (low < high) {
+
+        let pi = await partitionning(low, high)
+
+        await quickSort_aux(low, pi - 1)
+        await quickSort_aux(pi + 1, high)
+    }
+}
+
+async function quickSort() {
+        await quickSort_aux(0, stickArr.children.length - 1)
+        christmasTree()
+}
 
 sortText.addEventListener('click', (e) => {
 
@@ -293,12 +397,11 @@ sortText.addEventListener('click', (e) => {
     }
     else if (selectedSort == 'quick') {
         console.log('quick sort')
-        //quickSort()
+        quickSort()
     }
     else if (selectedSort == 'heap') {
         console.log('heap sort')
         heapSort()
-        //buildMaxHeap(stickArr.children.length)
     }
     else if (selectedSort == 'insert') {
         console.log('insert sort')
@@ -311,4 +414,4 @@ sortText.addEventListener('click', (e) => {
 
 })
 
-//console.log(stickArr.children[2].textContent < 50)
+

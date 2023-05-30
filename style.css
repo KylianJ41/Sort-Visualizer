@@ -64,10 +64,10 @@ main section {
     justify-content: center;
 }
 
-
-
-
-
+.speed > li {
+    padding: 5px;
+    border-radius: 7px;
+}
 
 
 
